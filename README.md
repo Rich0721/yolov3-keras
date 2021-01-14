@@ -11,12 +11,12 @@ opencv-python == 4.0.1.23
 ```
 
 ## Implement
--[x] yolov3
--[x] Backbone:Darknet53 
--[x] predict image
--[ ] predict video
--[ ] yolov3-tiny
--[ ] more backbone
+- [x] yolov3
+- [x] Backbone:Darknet53 
+- [x] predict image
+- [ ] predict video
+- [ ] yolov3-tiny
+- [ ] more backbone
 
 ## Training
 If you want to train self dataset, you need to modify `config.py`  
