@@ -202,3 +202,11 @@ class Generator:
                     inputs = []
                     targets = []
                     yield [tmp_inp, *y_true], np.zeros(self.batch_size)
+
+    def load_image(self, i):
+        
+        line = self.val_lines[i].split()
+        
+        image = Image.open(line[0])
+        boxes = np.array([np.array(list(map(int, box.split(",")))) for box in line[1:]])
+        return image, boxes
