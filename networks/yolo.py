@@ -1,22 +1,20 @@
-from numpy.lib.npyio import _savez_compressed_dispatcher
 import tensorflow as tf
-import numpy as np
 from tensorflow.keras import backend as K
 from tensorflow.keras.layers import UpSampling2D, Concatenate
 from tensorflow.keras.models import Model
 
-from networks.model import conv, darknet53
+from networks.model import darknet53, DarknetConv2D, DarknetConv2D_BN_Leaky, compose
 
-def make_last_layers(inputs, filters, out_filters, name):
+def make_last_layers(inputs, filters, out_filters):
 
-    x = conv(inputs, filters, (1, 1), name=name+"1")
-    x = conv(x, filters*2, (3, 3), name=name+"2")
-    x = conv(x, filters, (1, 1), name=name+"3")
-    x = conv(x, filters*2, (3, 3), name=name+"4")
-    x = conv(x, filters, (1, 1), name=name+"5")
+    x = DarknetConv2D_BN_Leaky(filters, (1, 1))(inputs)
+    x = DarknetConv2D_BN_Leaky(filters*2, (3, 3))(x)
+    x = DarknetConv2D_BN_Leaky(filters, (1, 1))(x)
+    x = DarknetConv2D_BN_Leaky(filters*2, (3, 3))(x)
+    x = DarknetConv2D_BN_Leaky(filters, (1, 1))(x)
     
-    y = conv(x, filters*2, (3, 3), name=name+"6")
-    y = conv(y, out_filters, (1, 1), normalization=False,name=name+"7")
+    y = DarknetConv2D_BN_Leaky(filters*2, (3, 3))(x)
+    y = DarknetConv2D(out_filters, (1, 1))(y)
     return x, y
 
 
@@ -25,22 +23,24 @@ def yolo_body(inputs, num_anchors, num_classes):
     feat1, feat2, feat3 = darknet53(inputs)
 
     # (13, 13, 1024) -> (13, 13, 512)
-    x, y1 = make_last_layers(feat3, 512, num_anchors*(num_classes + 5), name="feat3_make_last_layer")
+    x, y1 = make_last_layers(feat3, 512, num_anchors*(num_classes + 5))
 
     # (13, 13, 512) -> (26, 26, 256)
-    x = conv(x, 256, (1, 1), strides=(1, 1), name='feat3_upsample_conv')
-    x = UpSampling2D(2)(x)
+    x = compose(
+        DarknetConv2D_BN_Leaky(256, (1, 1)),
+        UpSampling2D(2))(x)
     x = Concatenate()([x, feat2])
 
     # (26, 26, 256) -> (52, 52, 128)
-    x, y2 = make_last_layers(x, 256, num_anchors*(num_classes + 5), name="feat2_make_last_layer")
+    x, y2 = make_last_layers(x, 256, num_anchors*(num_classes + 5))
 
-    x = conv(x, 128, (1, 1), strides=(1, 1), name='feat2_upsample_conv')
-    x = UpSampling2D(2)(x)
+    x = compose(
+        DarknetConv2D_BN_Leaky(128, (1, 1)),
+        UpSampling2D(2))(x)
     x = Concatenate()([x, feat1])
 
     # (52, 52, 256) -> (52, 52, 128)
-    x, y3 = make_last_layers(x, 128, num_anchors*(num_classes + 5), name="feat1_make_last_layer")
+    x, y3 = make_last_layers(x, 128, num_anchors*(num_classes + 5))
     return Model(inputs, [y1, y2, y3])
 
 
