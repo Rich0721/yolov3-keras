@@ -14,7 +14,7 @@ opencv-python == 4.0.1.23
 - [x] yolov3
 - [x] Backbone:Darknet53
 - [x] use voc dataset
-- [ ] use coco dataset
+- [x] use coco dataset
 - [x] predict image
 - [ ] predict video
 - [ ] yolov3-tiny
