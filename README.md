@@ -10,9 +10,11 @@ Pillow == 8.0.1
 opencv-python == 4.0.1.23
 ```
 
-## Implement
+## TODO
 - [x] yolov3
-- [x] Backbone:Darknet53 
+- [x] Backbone:Darknet53
+- [x] use voc dataset
+- [ ] use coco dataset
 - [x] predict image
 - [ ] predict video
 - [ ] yolov3-tiny
@@ -26,6 +28,11 @@ TRAIN_TEXT: Train image information.(EX: path xmin, ymin, xmax, ymax, class_numb
 DATASET : Storage images' and annotations' folder.
 ```
 And then you execute command line. `python train.py`.  
+
+
+If you want to train `VOC dataset`, you need to use `voc_annotation.py` that will xml convert to text.  
+If you want to train `COCO dataset`, you need to use `coco_annotation.py` that will xml convert to text.  
+
 
 ## Testing
 Please execute `predict.py`.  
