@@ -5,7 +5,7 @@ from config import config
 
 
 
-yolo = YOLO("./yolov3-mobilenetv2/yolov3-mobilenetv2-148.h5")
+yolo = YOLO("./yolov3-148.h5")
 
 with open("test.txt") as f:
         lines = f.readlines()
