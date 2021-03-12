@@ -41,8 +41,7 @@ You can look `predict_image.ipynb`.
 ![image01](./image/06694_result.jpg)
 
 ## Evalutate model
-Step 1: You need use `pip install predict_text.py` produce predicted results' text file.  
-Step 2: `pip install evaluate.py`  
+`python evalutate.py`  
 
 ## Execute Video
 
