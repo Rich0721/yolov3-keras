@@ -31,6 +31,10 @@ You can obtain three text files(train.txt, val.txt and test.txt)
 Step 3: `python train_300.py`  
 
 ## Test
+
+If you want to use my weight file, you can go to download in the link.  
+https://drive.google.com/file/d/1d6pQPtQi3t6YduDcCPW67Qi-hwxwVPfx/view?usp=sharing  
+
 You can look `predict_image.ipynb`.  
 
 ### Execute results
