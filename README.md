@@ -41,7 +41,8 @@ You can look `predict_image.ipynb`.
 ![image01](./image/06694_result.jpg)
 
 ## Evalutate model
-`python evalutate.py`  
+Modify the `evaluate.py` load weigth path, you can evaluate yourself model.   
+`python evaluate.py`  
 
 ## Execute Video
 
